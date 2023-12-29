@@ -1,0 +1,40 @@
+- name: install package on ubuntu disro
+  apt:
+    name:
+      - "{{ apache_package }}"
+      - "{{ php_package }}"
+    state: latest
+  when: ansible_distribution == "Ubuntu"
+
+- name: install package redhat disro
+  dnf:
+    name:
+      - "{{ apache_package }}"
+      - "{{ php_package }}"
+    state: latest
+  when: ansible_distribution == "RedHat"
+    
+- name: start and enable httpd service
+  service:
+    name: "{{ apache_service }}"
+    state: started
+    enabled: yes
+  when: ansible_distribution == "RedHat"
+
+- name: changing http port on redhat servers
+  tags: handlers
+  ansible.builtin.lineinfile:
+    path: /etc/httpd/conf/httpd.conf
+    regexp: '^Listen 80'
+    line: Listen 8080
+  when: ansible_distribution == "RedHat"
+  notify: restart_httpd
+
+
+- name: copy html file for static content
+  copy:
+    src: index.html
+    dest: /var/www/html/
+    mode: 0644
+    owner: root
+    group: root

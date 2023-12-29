@@ -1,0 +1,28 @@
+- name: update repo
+  package:
+    update_cache: yes
+
+- name: add ubuntu user to sudoers file
+  copy:
+    src: sudoers
+    dest: /etc/sudoers.d/ubuntu
+    owner: root
+    group: root
+    mode: 0440
+- name: add ansible user
+  user:
+    name: ansible
+    groups: root
+- name: add public key to simone authorized keys
+  authorized_key:
+    user: ansible
+    key: "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPrbNlZZOS0Nm00W7I2TjWrme2R+S8A/1TLAtytGYzKi ubuntu@ip-172-31-18-1"
+- name: add ansible to sudoers file
+  copy:
+    src: sudoers_ansible
+    dest: /etc/sudoers.d/ansible
+    owner: root
+    group: root
+    mode: 0440
+
+
