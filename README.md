@@ -1,4 +1,4 @@
-Here's Ansible playbook for a static website using HTML which you can run in redhat or ubuntu nodes.
+Here's Ansible playbook for a static website using HTML which created on EC2 AWS instances which you can run in redhat or ubuntu nodes.
 
 
 Kindly Note that:
